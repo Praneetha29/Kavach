@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kavach_app/Screens/login_screen.dart';
 import 'package:kavach_app/widgets/customized_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -11,10 +12,10 @@ class WelcomeScreen extends StatelessWidget {
         alignment: Alignment.topCenter,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 60),
+            margin: const EdgeInsets.only(top: 60),
             height: MediaQuery.of(context).size.height,
             width: double.infinity,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/home_illus.jpg"),
                 alignment: Alignment.topCenter,
@@ -24,7 +25,7 @@ class WelcomeScreen extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 100,
                 width: 100,
                 child: Image(
@@ -32,21 +33,24 @@ class WelcomeScreen extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(height: 35),
+              const SizedBox(height: 35),
               CustomizedButton(
                 buttonText: "Login",
-                buttonColor: Color(0XFF005653),
+                buttonColor: const Color(0XFF005653),
                 textColor: Colors.white,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const LoginScreen()));
+                },
               ),
-              SizedBox(height: 2),
+              const SizedBox(height: 2),
               CustomizedButton(
                 buttonText: "Register",
                 buttonColor: Colors.white,
-                textColor: Color(0XFF005653),
+                textColor: const Color(0XFF005653),
                 onPressed: () {},
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
             ],
           ),
         ],
