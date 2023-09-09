@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; 
-import 'package:kavach_app/Screens/login_screen.dart'; 
+import 'package:kavach_app/Screens/login_screen.dart';
+import 'package:kavach_app/Screens/welcome_screen.dart'; 
 import 'package:kavach_app/widgets/customized_button.dart';
 import 'package:kavach_app/widgets/customized_textfield.dart';
 
@@ -36,7 +37,9 @@ class SignUpScreen extends StatelessWidget {
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back_ios_sharp),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => WelcomeScreen()));
+                    
                       },
                     ),
                   ),

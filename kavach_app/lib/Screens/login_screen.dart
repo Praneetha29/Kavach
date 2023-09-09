@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
-import 'package:kavach_app/Screens/signup_screen.dart'; 
+import 'package:flutter/services.dart';
+import 'package:kavach_app/Screens/welcome_screen.dart';
+import 'package:kavach_app/screens/signup_screen.dart';
+import 'package:kavach_app/screens/forgot_password.dart';
 import 'package:kavach_app/widgets/customized_button.dart';
 import 'package:kavach_app/widgets/customized_textfield.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key});
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -16,10 +18,10 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _passwordController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    _mobileController = TextEditingController();
-    _passwordController = TextEditingController();
+  void dispose() {
+    _mobileController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -38,13 +40,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 50,
                   width: 50,
                   decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0XFF005653), width: 1),
+                    border:
+                        Border.all(color: const Color(0XFF005653), width: 1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back_ios_sharp),
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => WelcomeScreen()));
+                    
                     },
                   ),
                 ),
@@ -64,23 +69,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 myController: _mobileController,
                 hintText: "Enter your mobile number",
                 isPassword: false,
-                inputFormatter: [FilteringTextInputFormatter.digitsOnly], // Restrict to numbers
+                inputFormatter: [FilteringTextInputFormatter.digitsOnly],
               ),
               CustomizedTextField(
                 myController: _passwordController,
                 hintText: "Enter your password",
                 isPassword: true,
               ),
-              const Align(
+              Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                      color: Color(0XFF005653),
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => ForgotPassword()));
+                    },
+                    child: const Text(
+                      "Forgot Password?",
+                      style: TextStyle(
+                        color: Color(0XFF005653),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
@@ -90,8 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 buttonColor: const Color(0XFF005653),
                 textColor: Colors.white,
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const LoginScreen()));
+                  
                 },
               ),
               const SizedBox(
@@ -109,11 +119,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => const SignUpScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const SignUpScreen()));
                     },
                     child: const Text(
-                      "Sign in Now",
+                      "Sign up Now",
                       style: TextStyle(
                         color: Color(0XFF005653),
                         fontSize: 15,
