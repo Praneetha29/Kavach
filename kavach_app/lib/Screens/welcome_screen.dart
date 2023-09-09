@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kavach_app/Screens/login_screen.dart';
+import 'package:kavach_app/Screens/signup_screen.dart';
 import 'package:kavach_app/widgets/customized_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -48,7 +49,11 @@ class WelcomeScreen extends StatelessWidget {
                 buttonText: "Register",
                 buttonColor: Colors.white,
                 textColor: const Color(0XFF005653),
-                onPressed: () {},
+                onPressed: () {
+                   Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const SignUpScreen()));
+                
+                },
               ),
               const SizedBox(height: 50),
             ],

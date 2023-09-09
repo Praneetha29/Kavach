@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Import for FilteringTextInputFormatter
+import 'package:flutter/services.dart'; 
+import 'package:kavach_app/Screens/signup_screen.dart'; 
 import 'package:kavach_app/widgets/customized_button.dart';
 import 'package:kavach_app/widgets/customized_textfield.dart';
 
@@ -13,6 +14,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _mobileController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _mobileController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +50,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(10.0),
                 child: Text(
-                  "Secure Your Journey with Kavach",
+                  "Logging Back In:\nKavach's Safety Shield",
                   style: TextStyle(
                     color: Color(0XFF005653),
                     fontSize: 30,
@@ -82,28 +90,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 buttonColor: const Color(0XFF005653),
                 textColor: Colors.white,
                 onPressed: () {
-                  // Handle login logic here
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const LoginScreen()));
                 },
               ),
               const SizedBox(
                 height: 240,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Don't have an account? ",
                     style: TextStyle(
                       color: Color(0xff6a707c),
                       fontSize: 15,
                     ),
                   ),
-                  Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      color: Color(0XFF005653),
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => const SignUpScreen()));
+                    },
+                    child: const Text(
+                      "Sign in Now",
+                      style: TextStyle(
+                        color: Color(0XFF005653),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ],
