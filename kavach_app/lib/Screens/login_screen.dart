@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kavach_app/widgets/customized_button.dart';
 import 'package:kavach_app/widgets/customized_textfield.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -45,8 +46,57 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.bold,
                     )),
               ),
-              CustomizedTextField(myController: _emailController, hintText: "Enter your email", isPassword: false,),
-              CustomizedTextField(myController: _passwordController, hintText: "Enter your password", isPassword: true,),
+              CustomizedTextField(
+                myController: _emailController,
+                hintText: "Enter your email",
+                isPassword: false,
+              ),
+              CustomizedTextField(
+                myController: _passwordController,
+                hintText: "Enter your password",
+                isPassword: true,
+              ),
+              const Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("Forgot Password?",
+                  style: TextStyle(
+                    color: Color(0XFF005653),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  )),
+                ),
+              ),
+              CustomizedButton(
+                buttonText: "Login",
+                buttonColor: const Color(0XFF005653),
+                textColor: Colors.white,
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const LoginScreen()));
+                },
+              ),
+              SizedBox(
+                height: 240,
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Don't have an account? ",
+                  style: TextStyle(
+                    color: Color(0xff6a707c),
+                    fontSize: 15,
+                  ),),
+                  Text("Sign Up",
+                  style: TextStyle(
+                    color: Color(0XFF005653),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),),
+                ],
+              )
             ],
           ),
         ),
