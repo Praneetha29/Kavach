@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kavach_app/widgets/customized_textfield.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -44,7 +45,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.bold,
                     )),
               ),
-              
+              CustomizedTextField(myController: _emailController, hintText: "Enter your email", isPassword: false,),
+              CustomizedTextField(myController: _passwordController, hintText: "Enter your password", isPassword: true,),
             ],
           ),
         ),
