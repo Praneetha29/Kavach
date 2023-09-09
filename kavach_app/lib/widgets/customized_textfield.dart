@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Import for FilteringTextInputFormatter
 
 class CustomizedTextField extends StatelessWidget {
   final TextEditingController myController;
   final String? hintText;
   final bool? isPassword;
-  const CustomizedTextField(
-      {super.key, required this.myController, this.hintText, this.isPassword});
+  final List<TextInputFormatter>? inputFormatter; // Add this property
+
+  const CustomizedTextField({
+    Key? key,
+    required this.myController,
+    this.hintText,
+    this.isPassword,
+    this.inputFormatter, // Initialize it here
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +22,8 @@ class CustomizedTextField extends StatelessWidget {
       child: TextField(
         keyboardType: isPassword!
             ? TextInputType.visiblePassword
-            : TextInputType.emailAddress,
+            : TextInputType.phone, // Use TextInputType.phone for mobile number
+        inputFormatters: inputFormatter, // Apply the input formatter
         enableSuggestions: isPassword! ? false : true,
         autocorrect: isPassword! ? false : true,
         obscureText: isPassword ?? true,
@@ -23,7 +32,8 @@ class CustomizedTextField extends StatelessWidget {
           suffixIcon: isPassword!
               ? IconButton(
                   onPressed: () {},
-                  icon: Icon(Icons.remove_red_eye, color: Color(0xff183535)))
+                  icon: Icon(Icons.remove_red_eye, color: Color(0xff183535)),
+                )
               : null,
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: Color(0xffE8ECF4), width: 1),
