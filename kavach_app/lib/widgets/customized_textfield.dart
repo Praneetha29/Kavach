@@ -22,8 +22,8 @@ class CustomizedTextField extends StatelessWidget {
       child: TextField(
         keyboardType: isPassword!
             ? TextInputType.visiblePassword
-            : TextInputType.phone, // Use TextInputType.phone for mobile number
-        inputFormatters: inputFormatter, // Apply the input formatter
+            : TextInputType.phone, 
+        inputFormatters: inputFormatter, 
         enableSuggestions: isPassword! ? false : true,
         autocorrect: isPassword! ? false : true,
         obscureText: isPassword ?? true,
