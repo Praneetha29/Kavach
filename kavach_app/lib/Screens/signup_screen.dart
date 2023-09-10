@@ -87,34 +87,35 @@ class SignUpScreen extends StatelessWidget {
                         MaterialPageRoute(builder: (_) => const LoginScreen()));
                   },
                 ),
-                const SizedBox(
-                  height: 40,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Already have an account? ",
-                      style: TextStyle(
-                        color: Color(0xff6a707c),
-                        fontSize: 15,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => const LoginScreen()));
-                      },
-                      child: const Text(
-                        "Sign in Now",
+                SizedBox(height: 130,),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Already have an account? ",
                         style: TextStyle(
-                          color: Color(0XFF005653),
+                          color: Color(0xff6a707c),
                           fontSize: 15,
-                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                    ),
-                  ],
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) => const LoginScreen()));
+                        },
+                        child: const Text(
+                          "Sign in Now",
+                          style: TextStyle(
+                            color: Color(0XFF005653),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),

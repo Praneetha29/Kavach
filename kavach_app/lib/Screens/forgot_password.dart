@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kavach_app/Screens/login_screen.dart';
+import 'package:kavach_app/Screens/otp_form.dart';
 import 'package:kavach_app/Screens/welcome_screen.dart';
 import 'package:kavach_app/widgets/customized_button.dart';
 import 'package:kavach_app/widgets/customized_textfield.dart';
@@ -72,7 +73,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             buttonColor: Color(0XFF005653),
             textColor: Colors.white,
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => OtpForm()));
+                    
             },
           ),
           Spacer(flex: 1,),
