@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kavach_app/Screens/login_screen.dart';
+import 'package:kavach_app/Screens/user_profile.dart';
 import 'package:kavach_app/screens/forgot_password.dart';
 import 'package:kavach_app/widgets/customized_button.dart';
 
@@ -195,7 +196,7 @@ class _OtpFormState extends State<OtpForm> {
                 textColor: Colors.white,
                 onPressed: () {
                   Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => OtpForm()));
+                    MaterialPageRoute(builder: (_) => UserProfile()));
                 },
               ),
               
