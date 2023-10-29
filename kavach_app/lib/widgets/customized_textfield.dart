@@ -4,15 +4,17 @@ import 'package:flutter/services.dart';
 class CustomizedTextField extends StatelessWidget {
   final TextEditingController myController;
   final String? hintText;
+  final String? errorText;
   final bool? isPassword;
-  final List<TextInputFormatter>? inputFormatter;
+  final List<TextInputFormatter>? inputFormatter; // Add this property
 
   const CustomizedTextField({
     Key? key,
     required this.myController,
     this.hintText,
+    this.errorText,
     this.isPassword,
-    this.inputFormatter, 
+    this.inputFormatter, // Initialize it here
   });
 
   @override
@@ -20,10 +22,9 @@ class CustomizedTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: TextField(
-        keyboardType: isPassword!
-            ? TextInputType.visiblePassword
-            : TextInputType.phone, 
-        inputFormatters: inputFormatter, 
+        keyboardType:
+            isPassword! ? TextInputType.visiblePassword : TextInputType.phone,
+        inputFormatters: inputFormatter,
         enableSuggestions: isPassword! ? false : true,
         autocorrect: isPassword! ? false : true,
         obscureText: isPassword ?? true,
@@ -49,6 +50,7 @@ class CustomizedTextField extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
+          errorText: submitted! ? errorText : null,
         ),
       ),
     );
