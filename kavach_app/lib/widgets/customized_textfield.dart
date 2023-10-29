@@ -6,6 +6,7 @@ class CustomizedTextField extends StatelessWidget {
   final String? hintText;
   final String? errorText;
   final bool? isPassword;
+  final bool? submitted;
   final List<TextInputFormatter>? inputFormatter; // Add this property
 
   const CustomizedTextField({
@@ -14,6 +15,7 @@ class CustomizedTextField extends StatelessWidget {
     this.hintText,
     this.errorText,
     this.isPassword,
+    this.submitted,
     this.inputFormatter, // Initialize it here
   });
 
