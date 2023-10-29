@@ -12,8 +12,8 @@ class UserProfile extends StatelessWidget {
       designSize: const Size(414, 896),
     );
 
-    var profileInfo = Container( 
-      padding: const EdgeInsets.only(left: 60), 
+    var profileInfo = Container(
+      padding: const EdgeInsets.only(left: 60),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -115,28 +115,22 @@ class UserProfile extends StatelessWidget {
           Expanded(
             child: ListView(
               children: <Widget>[
-                const ProfileListView(
-                  icon: LineAwesomeIcons.user_shield,
+                ProfileListView(
                   text: 'Home',
                 ),
-                const ProfileListView(
-                  icon: LineAwesomeIcons.history,
+                ProfileListView(
                   text: 'History',
                 ),
-                const ProfileListView(
-                  icon: LineAwesomeIcons.user_shield,
+                ProfileListView(
                   text: 'Update Information',
                 ),
-                const ProfileListView(
-                  icon: LineAwesomeIcons.user_plus,
+                ProfileListView(
                   text: 'Add Contact',
                 ),
-                const ProfileListView(
-                  icon: LineAwesomeIcons.user_shield,
+                ProfileListView(
                   text: 'Change Password',
                 ),
-                const ProfileListView(
-                  icon: LineAwesomeIcons.alternate_sign_out,
+                ProfileListView(
                   text: 'Log Out',
                   hasNavigation: false,
                 )
@@ -150,19 +144,29 @@ class UserProfile extends StatelessWidget {
 }
 
 class ProfileListView extends StatelessWidget {
-  final IconData icon;
   final text;
   final bool hasNavigation;
 
   const ProfileListView({
     super.key,
-    required this.icon,
     this.text,
     this.hasNavigation = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    
+    final iconMap = {
+      'Home': LineAwesomeIcons.home,
+      'History': LineAwesomeIcons.history,
+      'Update Information': LineAwesomeIcons.user_edit,
+      'Add Contact': LineAwesomeIcons.user_plus,
+      'Change Password': LineAwesomeIcons.lock,
+      'Log Out': LineAwesomeIcons.alternate_sign_out,
+    };
+
+    final icon = iconMap[text];
+
     return Container(
       height: 55,
       margin: const EdgeInsets.symmetric(
@@ -180,7 +184,7 @@ class ProfileListView extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Icon(
-            this.icon,
+            icon,
             size: 30,
             color: Colors.white,
           ),

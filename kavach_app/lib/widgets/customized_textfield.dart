@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Import for FilteringTextInputFormatter
+import 'package:flutter/services.dart'; 
 
 class CustomizedTextField extends StatelessWidget {
   final TextEditingController myController;
   final String? hintText;
   final bool? isPassword;
-  final List<TextInputFormatter>? inputFormatter; // Add this property
+  final List<TextInputFormatter>? inputFormatter;
 
   const CustomizedTextField({
     Key? key,
     required this.myController,
     this.hintText,
     this.isPassword,
-    this.inputFormatter, // Initialize it here
+    this.inputFormatter, 
   });
 
   @override
