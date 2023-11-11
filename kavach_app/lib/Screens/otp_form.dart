@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kavach_app/Screens/login_screen.dart';
-import 'package:kavach_app/Screens/user_profile.dart';
+// import 'package:kavach_app/Screens/user_profile.dart';
 import 'package:kavach_app/screens/forgot_password.dart';
 import 'package:kavach_app/widgets/customized_button.dart';
 
@@ -28,7 +28,8 @@ class _OtpFormState extends State<OtpForm> {
                   height: 50,
                   width: 50,
                   decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0XFF005653), width: 1),
+                    border:
+                        Border.all(color: const Color(0XFF005653), width: 1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: IconButton(
@@ -42,9 +43,11 @@ class _OtpFormState extends State<OtpForm> {
                   ),
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               const Padding(
-                padding: EdgeInsets.only(left:16.0),
+                padding: EdgeInsets.only(left: 16.0),
                 child: Text(
                   "Verification",
                   style: TextStyle(
@@ -55,7 +58,7 @@ class _OtpFormState extends State<OtpForm> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 8.0, 8.0, 8.0), 
+                padding: const EdgeInsets.fromLTRB(16.0, 8.0, 8.0, 8.0),
                 child: Text(
                   "Enter the verification code",
                   style: TextStyle(
@@ -64,9 +67,12 @@ class _OtpFormState extends State<OtpForm> {
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0), // Add horizontal padding
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0), // Add horizontal padding
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -189,46 +195,49 @@ class _OtpFormState extends State<OtpForm> {
                   ],
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               CustomizedButton(
                 buttonText: "Verify",
                 buttonColor: Color(0XFF005653),
                 textColor: Colors.white,
                 onPressed: () {
-                  Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => UserProfile()));
+                  // Navigator.push(context,
+                  //   MaterialPageRoute(builder: (_) => UserProfile()));
                 },
               ),
-              
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Din't recieve any code ",
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Din't recieve any code ",
+                      style: TextStyle(
+                        color: Color(0xff6a707c),
+                        fontSize: 15,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const LoginScreen()));
+                      },
+                      child: const Text(
+                        "Resend Code",
                         style: TextStyle(
-                          color: Color(0xff6a707c),
+                          color: Color(0XFF005653),
                           fontSize: 15,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => const LoginScreen()));
-                        },
-                        child: const Text(
-                          "Resend Code",
-                          style: TextStyle(
-                            color: Color(0XFF005653),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),

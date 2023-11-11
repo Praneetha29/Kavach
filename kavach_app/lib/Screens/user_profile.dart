@@ -1,9 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:kavach_app/Database/config.dart';
 
-class UserProfile extends StatelessWidget {
-  const UserProfile({Key? key});
+class UserProfile extends StatefulWidget {
+  final String token;
+  const UserProfile({Key? key, required this.token});
+
+  @override
+  State<UserProfile> createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
+  late String username, mobile;
+  late IO.Socket socket;
+
+  @override
+  void initState() {
+    super.initState();
+    connect();
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(widget.token);
+
+    username = decodedToken["username"];
+    mobile = decodedToken["mobile"];
+  }
+
+  void connect() {
+    socket = IO.io(serverURL, <String, dynamic>{
+      'transports': ['websocket'],
+    });
+
+    socket.on('connect', (_) {
+      print('Connected');
+    });
+
+    socket.on('accidentOccurred', (data) {
+      print('Accident occurred!');
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: 'Alert!!!',
+        text: 'An accident is suspected.',
+      );
+    });
+
+    socket.connect();
+  }
+
+  @override
+  void dispose() {
+    socket.disconnect();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +63,8 @@ class UserProfile extends StatelessWidget {
       designSize: const Size(414, 896),
     );
 
-    var profileInfo = Container( 
-      padding: const EdgeInsets.only(left: 60), 
+    var profileInfo = Container(
+      padding: const EdgeInsets.only(left: 60),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -64,16 +115,16 @@ class UserProfile extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const Text(
-            'Priya Patel',
+          Text(
+            username,
             style: TextStyle(
                 color: Color(0XFF005653),
                 fontSize: 18,
                 fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 5),
-          const Text(
-            '123456789',
+          Text(
+            mobile,
             style: TextStyle(
                 color: Color(0XFF005653),
                 fontSize: 16,
@@ -190,9 +241,7 @@ class ProfileListView extends StatelessWidget {
           Text(
             this.text,
             style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.w300),
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
           ),
           const Spacer(),
           if (this.hasNavigation)

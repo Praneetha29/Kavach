@@ -1,10 +1,16 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kavach_app/Database/config.dart';
 import 'package:kavach_app/Screens/login_screen.dart';
 import 'package:kavach_app/Screens/welcome_screen.dart';
 import 'package:kavach_app/widgets/customized_button.dart';
 import 'package:kavach_app/widgets/customized_textfield.dart';
 import 'package:kavach_app/widgets/form_validation.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -53,15 +59,52 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return validator.getErrorMessages();
   }
 
-  void signup() {
+  Future signup() async {
     setState(() => submitted = true);
     if ((mobileErrorText == null) &&
         (usernameErrorText == null) &&
         (passwordErrorText == null) &&
         (confirmPasswordErrorText == null)) {
-      print("Account Created!!!");
-      Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+      var registerBody = {
+        "mobile": _mobileController.value.text,
+        "username": _usernameController.value.text,
+        "password": _passwordController.value.text
+      };
+
+      try {
+        var res = await http.post(Uri.parse(registerAPI),
+            headers: {"Content-Type": "application/json"},
+            body: jsonEncode(registerBody));
+
+        var response = jsonDecode(res.body);
+
+        if (res.statusCode == 200) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            title: 'Done',
+            text: response['message'],
+          );
+        } else {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Error...',
+            text: 'Registration failed. Try again.',
+          );
+        }
+      } catch (e) {
+        inspect(e);
+      }
+    } else {
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: 'Error...',
+        text: 'Enter all the details properly',
+      );
     }
   }
 
@@ -167,9 +210,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   buttonText: "Sign Up",
                                   buttonColor: const Color(0XFF005653),
                                   textColor: Colors.white,
-                                  onPressed: () {
-                                    signup();
-                                  },
+                                  onPressed: signup,
                                 ),
                                 SizedBox(
                                   height: 130,
