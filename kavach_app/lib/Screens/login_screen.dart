@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kavach_app/Screens/map_screen.dart';
 import 'package:kavach_app/Screens/welcome_screen.dart';
 import 'package:kavach_app/screens/signup_screen.dart';
 import 'package:kavach_app/screens/forgot_password.dart';
 import 'package:kavach_app/widgets/customized_button.dart';
 import 'package:kavach_app/widgets/customized_textfield.dart';
 import 'package:kavach_app/widgets/form_validation.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -35,11 +37,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void login() {
-    setState(() => submitted = true);
-    if ((mobileErrorText == null) && (passwordErrorText == null)) {
-      print("Data Sent!!!");
-    }
+  setState(() => submitted = true); // we need to implement the user auth here
+
+  if (_mobileController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MapScreen()));
   }
+}
+
+
 
   @override
   void dispose() {
