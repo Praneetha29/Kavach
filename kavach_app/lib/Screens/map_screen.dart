@@ -2,6 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:kavach_app/Screens/UpdateInformationPage.dart';
+import 'package:kavach_app/Screens/ViewHistoryPage.dart';
+import 'package:kavach_app/Screens/AddContactPage.dart';
+import 'package:kavach_app/Screens/ChangePasswordPage.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -171,62 +175,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 }
 
-class UpdateInformationPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Update Information'),
-        backgroundColor: Color(0XFF005653), // Set the app bar color
-      ),
-      body: Center(
-        child: Text('Update Information Page'),
-      ),
-    );
-  }
-}
 
-class ViewHistoryPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('View History'),
-        backgroundColor: Color(0XFF005653), // Set the app bar color
-      ),
-      body: Center(
-        child: Text('View History Page'),
-      ),
-    );
-  }
-}
 
-class AddContactPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Contact'),
-        backgroundColor: Color(0XFF005653), // Set the app bar color
-      ),
-      body: Center(
-        child: Text('Add Contact Page'),
-      ),
-    );
-  }
-}
 
-class ChangePasswordPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Change Password'),
-        backgroundColor: Color(0XFF005653), // Set the app bar color
-      ),
-      body: Center(
-        child: Text('Change Password Page'),
-      ),
-    );
-  }
-}
+
