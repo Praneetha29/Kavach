@@ -103,7 +103,7 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Map Screen'),
+        title: Text('Home Screen'),
         backgroundColor: Color(0XFF005653), // Set the app bar color
       ),
       drawer: Drawer(
