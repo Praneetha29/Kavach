@@ -1,5 +1,6 @@
+// Update in customized_textfield.dart
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
 
 class CustomizedTextField extends StatelessWidget {
   final TextEditingController myController;
@@ -8,6 +9,7 @@ class CustomizedTextField extends StatelessWidget {
   final bool? isPassword;
   final bool? submitted;
   final List<TextInputFormatter>? inputFormatter; // Add this property
+  final Icon? prefixIcon; // Updated prefixIcon to be an Icon widget
 
   const CustomizedTextField({
     Key? key,
@@ -16,27 +18,28 @@ class CustomizedTextField extends StatelessWidget {
     this.errorText,
     this.isPassword,
     this.submitted,
-    this.inputFormatter, // Initialize it here
-  });
+    this.inputFormatter,
+    this.prefixIcon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: TextField(
-        keyboardType:
-            isPassword! ? TextInputType.visiblePassword : TextInputType.phone,
+        keyboardType: isPassword! ? TextInputType.visiblePassword : TextInputType.phone,
         inputFormatters: inputFormatter,
         enableSuggestions: isPassword! ? false : true,
         autocorrect: isPassword! ? false : true,
         obscureText: isPassword ?? true,
         controller: myController,
         decoration: InputDecoration(
+          prefixIcon: prefixIcon, // Updated prefixIcon to be an Icon widget
           suffixIcon: isPassword!
               ? IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.remove_red_eye, color: Color(0xff183535)),
-                )
+            onPressed: () {},
+            icon: Icon(Icons.remove_red_eye, color: Color(0xff183535)),
+          )
               : null,
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: Color(0xffE8ECF4), width: 1),

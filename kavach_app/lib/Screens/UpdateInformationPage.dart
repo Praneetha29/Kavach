@@ -16,7 +16,7 @@ class UpdateInformationPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Profile Picture
               CircleAvatar(
@@ -29,12 +29,14 @@ class UpdateInformationPage extends StatelessWidget {
               _buildTextFieldWithHeading(
                 heading: 'Full Name',
                 hintText: 'John Doe',
+                icon: Icons.person,
               ),
 
               // Email
               _buildTextFieldWithHeading(
                 heading: 'Email',
                 hintText: 'john.doe@example.com',
+                icon: Icons.email,
               ),
 
               // Mobile Number
@@ -45,6 +47,7 @@ class UpdateInformationPage extends StatelessWidget {
                   FilteringTextInputFormatter.digitsOnly,
                   LengthLimitingTextInputFormatter(10),
                 ],
+                icon: Icons.phone,
               ),
 
               // Emergency Contact Number 1
@@ -55,6 +58,7 @@ class UpdateInformationPage extends StatelessWidget {
                   FilteringTextInputFormatter.digitsOnly,
                   LengthLimitingTextInputFormatter(10),
                 ],
+                icon: Icons.phone,
               ),
 
               // Emergency Contact Number 2
@@ -65,13 +69,15 @@ class UpdateInformationPage extends StatelessWidget {
                   FilteringTextInputFormatter.digitsOnly,
                   LengthLimitingTextInputFormatter(10),
                 ],
+                icon: Icons.phone,
               ),
 
               // Additional Contacts Button
               CustomizedButton(
                 buttonText: 'Additional Contacts',
-                buttonColor: Color(0XFF005653),
-                textColor: Colors.white,
+                buttonColor: Colors.white,
+                borderColor: Color(0XFF005653),
+                textColor: Color(0XFF005653),
                 onPressed: () {
                   // Navigate to the AddContactPage
                   Navigator.push(
@@ -85,23 +91,17 @@ class UpdateInformationPage extends StatelessWidget {
 
               // Save and Cancel Buttons
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CustomizedButton(
-                    buttonText: 'Save',
-                    buttonColor: Color(0XFF005653),
-                    textColor: Colors.white,
-                    onPressed: () {
-                      // Handle save logic
-                    },
-                  ),
-                  CustomizedButton(
-                    buttonText: 'Cancel',
-                    buttonColor: Colors.grey,
-                    textColor: Colors.white,
-                    onPressed: () {
-                      // Handle cancel logic
-                    },
+                  Expanded(
+                    child: CustomizedButton(
+                      buttonText: 'Save',
+                      buttonColor: Color(0XFF005653),
+                      textColor: Colors.white,
+                      onPressed: () {
+                        // Handle save logic
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -116,6 +116,7 @@ class UpdateInformationPage extends StatelessWidget {
     required String heading,
     required String hintText,
     List<TextInputFormatter>? inputFormatter,
+    required IconData icon,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +124,7 @@ class UpdateInformationPage extends StatelessWidget {
         Text(
           heading,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -133,6 +134,7 @@ class UpdateInformationPage extends StatelessWidget {
           isPassword: false,
           submitted: true,
           inputFormatter: inputFormatter,
+          prefixIcon: Icon(icon),
         ),
         SizedBox(height: 10),
       ],

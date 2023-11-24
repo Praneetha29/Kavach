@@ -1,16 +1,20 @@
+// Update in customized_button.dart
 import 'package:flutter/material.dart';
 
 class CustomizedButton extends StatelessWidget {
   final String? buttonText;
   final Color? buttonColor;
   final Color? textColor;
+  final Color? borderColor; // Added borderColor
   final VoidCallback? onPressed;
-  const CustomizedButton(
-      {super.key,
-      this.buttonText,
-      this.buttonColor,
-      this.onPressed,
-      this.textColor});
+  const CustomizedButton({
+    Key? key,
+    this.buttonText,
+    this.buttonColor,
+    this.textColor,
+    this.borderColor, // Added borderColor
+    this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +23,21 @@ class CustomizedButton extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         child: Container(
-            margin: EdgeInsets.all(6.0),
-            height: 70,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: buttonColor,
-              border: Border.all(width: 1, color: Color(0XFF005653)),
-              borderRadius: BorderRadius.circular(10),
+          margin: EdgeInsets.all(6.0),
+          height: 70,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: buttonColor,
+            border: Border.all(width: 1, color: borderColor ?? Colors.transparent), // Updated borderColor
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Center(
+            child: Text(
+              buttonText!,
+              style: TextStyle(color: textColor!, fontSize: 20),
             ),
-            child: Center(
-                child: Text(buttonText!,
-                    style: TextStyle(color: textColor!, fontSize: 20)))),
+          ),
+        ),
       ),
     );
   }
