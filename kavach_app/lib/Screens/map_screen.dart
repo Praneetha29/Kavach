@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -55,7 +54,6 @@ class _MapScreenState extends State<MapScreen> {
 
     Position position = await Geolocator.getCurrentPosition();
 
-    // Uncomment the following lines to add a marker at the user's current location
     _markers.add(
       Marker(
         markerId: MarkerId('1'),
@@ -100,6 +98,57 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Map Screen'),
+        backgroundColor: Color(0XFF005653), // Set the app bar color
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color(0XFF005653),
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text('Update Information'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateInformationPage()));
+              },
+            ),
+            ListTile(
+              title: Text('View History'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ViewHistoryPage()));
+              },
+            ),
+            ListTile(
+              title: Text('Add Contact'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AddContactPage()));
+              },
+            ),
+            ListTile(
+              title: Text('Change Password'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordPage()));
+              },
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: GoogleMap(
           initialCameraPosition: _kGooglePlex,
@@ -116,6 +165,67 @@ class _MapScreenState extends State<MapScreen> {
         onPressed: () {
           loadData(); // Reload data when the button is pressed
         },
+        backgroundColor: Color(0XFF005653), // Set the FAB color
+      ),
+    );
+  }
+}
+
+class UpdateInformationPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Update Information'),
+        backgroundColor: Color(0XFF005653), // Set the app bar color
+      ),
+      body: Center(
+        child: Text('Update Information Page'),
+      ),
+    );
+  }
+}
+
+class ViewHistoryPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('View History'),
+        backgroundColor: Color(0XFF005653), // Set the app bar color
+      ),
+      body: Center(
+        child: Text('View History Page'),
+      ),
+    );
+  }
+}
+
+class AddContactPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Add Contact'),
+        backgroundColor: Color(0XFF005653), // Set the app bar color
+      ),
+      body: Center(
+        child: Text('Add Contact Page'),
+      ),
+    );
+  }
+}
+
+class ChangePasswordPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Change Password'),
+        backgroundColor: Color(0XFF005653), // Set the app bar color
+      ),
+      body: Center(
+        child: Text('Change Password Page'),
       ),
     );
   }
