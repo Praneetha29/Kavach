@@ -1,18 +1,18 @@
-// Update in customized_button.dart
+
 import 'package:flutter/material.dart';
 
 class CustomizedButton extends StatelessWidget {
   final String? buttonText;
   final Color? buttonColor;
   final Color? textColor;
-  final Color? borderColor; // Added borderColor
+  final Color? borderColor;
   final VoidCallback? onPressed;
   const CustomizedButton({
     Key? key,
     this.buttonText,
     this.buttonColor,
     this.textColor,
-    this.borderColor, // Added borderColor
+    this.borderColor,
     this.onPressed,
   }) : super(key: key);
 
@@ -28,13 +28,17 @@ class CustomizedButton extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             color: buttonColor,
-            border: Border.all(width: 1, color: borderColor ?? Colors.transparent), // Updated borderColor
+            border: Border.all(width: 1, color: borderColor ?? Colors.transparent),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Center(
             child: Text(
               buttonText!,
-              style: TextStyle(color: textColor!, fontSize: 20),
+              style: TextStyle(
+                color: textColor!,
+                fontSize: 22,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ),

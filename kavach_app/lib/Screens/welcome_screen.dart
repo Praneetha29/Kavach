@@ -48,6 +48,7 @@ class WelcomeScreen extends StatelessWidget {
               CustomizedButton(
                 buttonText: "Register",
                 buttonColor: Colors.white,
+                borderColor: Color(0XFF005653),
                 textColor: const Color(0XFF005653),
                 onPressed: () {
                    Navigator.push(context,

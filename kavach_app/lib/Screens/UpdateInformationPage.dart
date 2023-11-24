@@ -19,9 +19,18 @@ class UpdateInformationPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Profile Picture
-              CircleAvatar(
-                radius: 50,
-                // You can add the profile picture logic here
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: 60,
+                ),
               ),
               SizedBox(height: 20),
 
@@ -89,21 +98,14 @@ class UpdateInformationPage extends StatelessWidget {
 
               SizedBox(height: 20),
 
-              // Save and Cancel Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: CustomizedButton(
-                      buttonText: 'Save',
-                      buttonColor: Color(0XFF005653),
-                      textColor: Colors.white,
-                      onPressed: () {
-                        // Handle save logic
-                      },
-                    ),
-                  ),
-                ],
+              // Save Button
+              CustomizedButton(
+                buttonText: 'Save',
+                buttonColor: Color(0XFF005653),
+                textColor: Colors.white,
+                onPressed: () {
+                  // Handle save logic
+                },
               ),
             ],
           ),
