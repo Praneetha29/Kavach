@@ -4,18 +4,22 @@ import 'package:kavach_app/widgets/customized_textfield.dart';
 import 'package:kavach_app/widgets/customized_button.dart';
 
 class AddContactPage extends StatelessWidget {
+  // Consider If the controllers need to be disposed, switch to a StatefulWidget and override dispose().
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+
+  // Add key to constructor
+ AddContactPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Emergency Contact'),
-        backgroundColor: Color(0XFF005653), // Set the app bar color
+        title: const Text('Emergency Contact'), // const added for performance
+        backgroundColor: const Color(0XFF005653), // const added for performance
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0), // const added for performance
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -25,7 +29,7 @@ class AddContactPage extends StatelessWidget {
               isPassword: false,
               submitted: true,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16), // const added for performance
             CustomizedTextField(
               myController: phoneController,
               hintText: 'Phone',
@@ -36,10 +40,10 @@ class AddContactPage extends StatelessWidget {
                 LengthLimitingTextInputFormatter(10),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16), // const added for performance
             CustomizedButton(
               buttonText: 'Add Contact',
-              buttonColor: Color(0XFF005653),
+              buttonColor: const Color(0XFF005653), // const added for performance
               textColor: Colors.white,
               onPressed: () {
                 // Add your logic here for adding contact

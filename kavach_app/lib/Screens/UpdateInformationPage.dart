@@ -83,7 +83,7 @@ class UpdateInformationPage extends StatelessWidget {
 
               // Additional Contacts Button
               CustomizedButton(
-                buttonText: 'Additional Contacts',
+                buttonText: 'Add Contacts',
                 buttonColor: Colors.white,
                 borderColor: Color(0XFF005653),
                 textColor: Color(0XFF005653),
