@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
 
 class CustomizedTextField extends StatelessWidget {
   final TextEditingController myController;
   final String? hintText;
+  final String? errorText;
   final bool? isPassword;
-  final List<TextInputFormatter>? inputFormatter;
+  final bool? submitted;
+  final List<TextInputFormatter>? inputFormatter; // Add this property
 
   const CustomizedTextField({
     Key? key,
     required this.myController,
     this.hintText,
+    this.errorText,
     this.isPassword,
-    this.inputFormatter, 
+    this.submitted,
+    this.inputFormatter, // Initialize it here
   });
 
   @override
@@ -20,10 +24,9 @@ class CustomizedTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: TextField(
-        keyboardType: isPassword!
-            ? TextInputType.visiblePassword
-            : TextInputType.phone, 
-        inputFormatters: inputFormatter, 
+        keyboardType:
+        isPassword! ? TextInputType.visiblePassword : TextInputType.phone,
+        inputFormatters: inputFormatter,
         enableSuggestions: isPassword! ? false : true,
         autocorrect: isPassword! ? false : true,
         obscureText: isPassword ?? true,
@@ -31,9 +34,9 @@ class CustomizedTextField extends StatelessWidget {
         decoration: InputDecoration(
           suffixIcon: isPassword!
               ? IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.remove_red_eye, color: Color(0xff183535)),
-                )
+            onPressed: () {},
+            icon: Icon(Icons.remove_red_eye, color: Color(0xff183535)),
+          )
               : null,
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: Color(0xffE8ECF4), width: 1),
@@ -49,6 +52,7 @@ class CustomizedTextField extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
+          errorText: submitted! ? errorText : null,
         ),
       ),
     );
