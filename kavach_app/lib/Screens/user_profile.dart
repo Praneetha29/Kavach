@@ -5,6 +5,11 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:kavach_app/Database/config.dart';
+import 'package:kavach_app/Screens/map_screen.dart';
+import 'package:kavach_app/Screens/ViewHistoryPage.dart';
+import 'package:kavach_app/Screens/UpdateInformationPage.dart';
+import 'package:kavach_app/Screens/AddContactPage.dart';
+import 'package:kavach_app/Screens/ChangePasswordPage.dart';
 
 class UserProfile extends StatefulWidget {
   final String token;
@@ -168,23 +173,37 @@ class _UserProfileState extends State<UserProfile> {
               children: <Widget>[
                 ProfileListView(
                   text: 'Home',
+                  icon: LineAwesomeIcons.home,
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen())),
                 ),
                 ProfileListView(
                   text: 'History',
+                  icon: LineAwesomeIcons.history,
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ViewHistoryPage())),
                 ),
                 ProfileListView(
                   text: 'Update Information',
+                  icon: LineAwesomeIcons.user_edit,
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateInformationPage())),
                 ),
                 ProfileListView(
                   text: 'Add Contact',
+                  icon: LineAwesomeIcons.user_plus,
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddContactPage())),
                 ),
                 ProfileListView(
                   text: 'Change Password',
+                  icon: LineAwesomeIcons.lock,
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordPage())),
                 ),
+                // Include other navigation items using the same pattern...
                 ProfileListView(
                   text: 'Log Out',
-                  hasNavigation: false,
-                )
+                  icon: LineAwesomeIcons.alternate_sign_out, // Defined icon parameter
+                  onTap: () {
+                    // Include logout functionality here...
+                  },
+                ),
               ],
             ),
           ),
@@ -195,18 +214,19 @@ class _UserProfileState extends State<UserProfile> {
 }
 
 class ProfileListView extends StatelessWidget {
-  final text;
-  final bool hasNavigation;
+  final String text;
+  final IconData icon; // Define the icon parameter here
+  final VoidCallback onTap; // Define onTap as a VoidCallback
 
   const ProfileListView({
-    super.key,
-    this.text,
-    this.hasNavigation = true,
-  });
-
+    Key? key,
+    required this.text,
+    required this.icon, // Make sure to require the icon parameter
+    required this.onTap, // Make sure to require the onTap parameter
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    
+
     final iconMap = {
       'Home': LineAwesomeIcons.home,
       'History': LineAwesomeIcons.history,
@@ -218,43 +238,32 @@ class ProfileListView extends StatelessWidget {
 
     final icon = iconMap[text];
 
-    return Container(
-      height: 55,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 40,
-      ).copyWith(
-        bottom: 20,
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: const Color(0XFF005653),
-      ),
-      child: Row(
-        children: <Widget>[
-          Icon(
-            icon,
-            size: 30,
-            color: Colors.white,
-          ),
-          const SizedBox(
-            width: 25,
-          ),
-          Text(
-            this.text,
-            style: const TextStyle(
-                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
-          ),
-          const Spacer(),
-          if (this.hasNavigation)
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 55,
+        margin: const EdgeInsets.symmetric(horizontal: 40).copyWith(bottom: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: const Color(0XFF005653),
+        ),
+        child: Row(
+          children: <Widget>[
+            Icon(icon, size: 30, color: Colors.white),
+            const SizedBox(width: 25),
+            Text(
+              text,
+              style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
+            ),
+            const Spacer(),
             const Icon(
               LineAwesomeIcons.angle_right,
               size: 25,
               color: Colors.white,
-            )
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
