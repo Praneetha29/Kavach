@@ -8,6 +8,7 @@ class CustomizedTextField extends StatelessWidget {
   final bool? isPassword;
   final bool? submitted;
   final List<TextInputFormatter>? inputFormatter; // Add this property
+  final Icon? prefixIcon; // Updated prefixIcon to be an Icon widget
 
   const CustomizedTextField({
     Key? key,
@@ -16,8 +17,9 @@ class CustomizedTextField extends StatelessWidget {
     this.errorText,
     this.isPassword,
     this.submitted,
-    this.inputFormatter, // Initialize it here
-  });
+    this.inputFormatter,
+    this.prefixIcon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class CustomizedTextField extends StatelessWidget {
         obscureText: isPassword ?? true,
         controller: myController,
         decoration: InputDecoration(
+          prefixIcon: prefixIcon, // Use the prefixIcon if provided
           suffixIcon: isPassword!
               ? IconButton(
             onPressed: () {},

@@ -3,8 +3,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:kavach_app/Screens/map_screen.dart';
+
 import 'package:kavach_app/Database/config.dart';
 import 'package:kavach_app/Screens/user_profile.dart';
+
 import 'package:kavach_app/Screens/welcome_screen.dart';
 import 'package:kavach_app/screens/signup_screen.dart';
 import 'package:kavach_app/screens/forgot_password.dart';
@@ -42,33 +46,32 @@ class _LoginScreenState extends State<LoginScreen> {
   String? get mobileErrorText {
     final mobileText = _mobileController.value.text;
     FormValidation validator =
-        FormValidation(inputText: mobileText, validationType: "mobile");
+    FormValidation(inputText: mobileText, validationType: "mobile");
     return validator.getErrorMessages();
   }
 
   String? get passwordErrorText {
     final passwordText = _passwordController.value.text;
     FormValidation validator =
-        FormValidation(inputText: passwordText, validationType: "password");
+    FormValidation(inputText: passwordText, validationType: "password");
     return validator.getErrorMessages();
   }
 
   void login() async {
     setState(() => submitted = true);
-    if ((mobileErrorText == null) && (passwordErrorText == null)) {
+    final mobileText = _mobileController.value.text;
+    final passwordText = _passwordController.value.text;
+    if (mobileText.isNotEmpty && passwordText.isNotEmpty && mobileErrorText == null && passwordErrorText == null) {
       var loginBody = {
-        "mobile": _mobileController.value.text,
-        "password": _passwordController.value.text
+        "mobile": mobileText,
+        "password": passwordText
       };
-
       try {
         var res = await http.post(Uri.parse(loginAPI),
             headers: {"Content-Type": "application/json"},
             body: jsonEncode(loginBody));
-
         var response = jsonDecode(res.body);
         inspect(res);
-
         if (res.statusCode == 200) {
           var authToken = response['token'];
           prefs.setString("token", authToken);
@@ -91,6 +94,8 @@ class _LoginScreenState extends State<LoginScreen> {
       } catch (e) {
         inspect(e);
       }
+    } else if (mobileText.isEmpty || passwordText.isEmpty) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MapScreen()));
     }
   }
 
@@ -215,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (_) =>
-                                                const SignUpScreen()));
+                                            const SignUpScreen()));
                                   },
                                   child: const Text(
                                     "Sign up Now",
