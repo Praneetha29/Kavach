@@ -1,10 +1,16 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kavach_app/Database/config.dart';
 import 'package:kavach_app/Screens/login_screen.dart';
 import 'package:kavach_app/Screens/welcome_screen.dart';
 import 'package:kavach_app/widgets/customized_button.dart';
 import 'package:kavach_app/widgets/customized_textfield.dart';
 import 'package:kavach_app/widgets/form_validation.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -18,28 +24,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  TextEditingController();
 
   bool submitted = false;
 
   String? get mobileErrorText {
     final mobileText = _mobileController.value.text;
     FormValidation validator =
-        FormValidation(inputText: mobileText, validationType: "mobile");
+    FormValidation(inputText: mobileText, validationType: "mobile");
     return validator.getErrorMessages();
   }
 
   String? get passwordErrorText {
     final passwordText = _passwordController.value.text;
     FormValidation validator =
-        FormValidation(inputText: passwordText, validationType: "password");
+    FormValidation(inputText: passwordText, validationType: "password");
     return validator.getErrorMessages();
   }
 
   String? get usernameErrorText {
     final usernameText = _usernameController.value.text;
     FormValidation validator =
-        FormValidation(inputText: usernameText, validationType: "username");
+    FormValidation(inputText: usernameText, validationType: "username");
     return validator.getErrorMessages();
   }
 
@@ -53,15 +59,52 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return validator.getErrorMessages();
   }
 
-  void signup() {
+  Future signup() async {
     setState(() => submitted = true);
     if ((mobileErrorText == null) &&
         (usernameErrorText == null) &&
         (passwordErrorText == null) &&
         (confirmPasswordErrorText == null)) {
-      print("Account Created!!!");
-      Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+      var registerBody = {
+        "mobile": _mobileController.value.text,
+        "username": _usernameController.value.text,
+        "password": _passwordController.value.text
+      };
+
+      try {
+        var res = await http.post(Uri.parse(registerAPI),
+            headers: {"Content-Type": "application/json"},
+            body: jsonEncode(registerBody));
+
+        var response = jsonDecode(res.body);
+
+        if (res.statusCode == 200) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            title: 'Done',
+            text: response['message'],
+          );
+        } else {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Error...',
+            text: 'Registration failed. Try again.',
+          );
+        }
+      } catch (e) {
+        inspect(e);
+      }
+    } else {
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: 'Error...',
+        text: 'Enter all the details properly',
+      );
     }
   }
 
@@ -92,19 +135,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     width: 50,
                     decoration: BoxDecoration(
                       border: Border.all(
-                          color: const Color(0XFF005653),
-                          width: 1),
+                          color: const Color(0XFF005653), width: 1),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: IconButton(
-                      icon: const Icon(
-                          Icons.arrow_back_ios_sharp),
+                      icon: const Icon(Icons.arrow_back_ios_sharp),
                       onPressed: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) =>
-                                    WelcomeScreen()));
+                                builder: (_) => WelcomeScreen()));
                       },
                     ),
                   ),
@@ -126,9 +166,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   errorText: mobileErrorText,
                   isPassword: false,
                   submitted: submitted,
-                  inputFormatter: [
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  inputFormatter: [FilteringTextInputFormatter.digitsOnly],
                 ),
                 CustomizedTextField(
                   myController: _usernameController,
@@ -159,39 +197,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     signup();
                   },
                 ),
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Already have an account? ",
+                        style: TextStyle(
+                          color: Color(0xff6a707c),
+                          fontSize: 15,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const LoginScreen()));
+                        },
+                        child: const Text(
+                          "Sign in Now",
+                          style: TextStyle(
+                            color: Color(0XFF005653),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
-          ),
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "Already have an account? ",
-                style: TextStyle(
-                  color: Color(0xff6a707c),
-                  fontSize: 15,
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const LoginScreen()));
-                },
-                child: const Text(
-                  "Sign in Now",
-                  style: TextStyle(
-                    color: Color(0XFF005653),
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
           ),
         ),
       ),

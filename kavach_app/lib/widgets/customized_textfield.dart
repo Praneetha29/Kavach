@@ -1,4 +1,3 @@
-// Update in customized_textfield.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -27,14 +26,15 @@ class CustomizedTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: TextField(
-        keyboardType: isPassword! ? TextInputType.visiblePassword : TextInputType.phone,
+        keyboardType:
+        isPassword! ? TextInputType.visiblePassword : TextInputType.phone,
         inputFormatters: inputFormatter,
         enableSuggestions: isPassword! ? false : true,
         autocorrect: isPassword! ? false : true,
         obscureText: isPassword ?? true,
         controller: myController,
         decoration: InputDecoration(
-          prefixIcon: prefixIcon, // Updated prefixIcon to be an Icon widget
+          prefixIcon: prefixIcon, // Use the prefixIcon if provided
           suffixIcon: isPassword!
               ? IconButton(
             onPressed: () {},

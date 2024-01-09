@@ -1,13 +1,23 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:kavach_app/Screens/map_screen.dart';
+
+import 'package:kavach_app/Database/config.dart';
+import 'package:kavach_app/Screens/user_profile.dart';
+
 import 'package:kavach_app/Screens/welcome_screen.dart';
 import 'package:kavach_app/screens/signup_screen.dart';
 import 'package:kavach_app/screens/forgot_password.dart';
 import 'package:kavach_app/widgets/customized_button.dart';
 import 'package:kavach_app/widgets/customized_textfield.dart';
 import 'package:kavach_app/widgets/form_validation.dart';
-
+import 'package:quickalert/quickalert.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -19,32 +29,75 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _mobileController = TextEditingController();
   final _passwordController = TextEditingController();
+  late SharedPreferences prefs;
 
   bool submitted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    initSharedPref();
+  }
+
+  void initSharedPref() async {
+    prefs = await SharedPreferences.getInstance();
+  }
 
   String? get mobileErrorText {
     final mobileText = _mobileController.value.text;
     FormValidation validator =
-        FormValidation(inputText: mobileText, validationType: "mobile");
+    FormValidation(inputText: mobileText, validationType: "mobile");
     return validator.getErrorMessages();
   }
 
   String? get passwordErrorText {
     final passwordText = _passwordController.value.text;
     FormValidation validator =
-        FormValidation(inputText: passwordText, validationType: "password");
+    FormValidation(inputText: passwordText, validationType: "password");
     return validator.getErrorMessages();
   }
 
-  void login() {
-  setState(() => submitted = true); // we need to implement the user auth here
-
-  if (_mobileController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MapScreen()));
+  void login() async {
+    setState(() => submitted = true);
+    final mobileText = _mobileController.value.text;
+    final passwordText = _passwordController.value.text;
+    if (mobileText.isNotEmpty && passwordText.isNotEmpty && mobileErrorText == null && passwordErrorText == null) {
+      var loginBody = {
+        "mobile": mobileText,
+        "password": passwordText
+      };
+      try {
+        var res = await http.post(Uri.parse(loginAPI),
+            headers: {"Content-Type": "application/json"},
+            body: jsonEncode(loginBody));
+        var response = jsonDecode(res.body);
+        inspect(res);
+        if (res.statusCode == 200) {
+          var authToken = response['token'];
+          prefs.setString("token", authToken);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => UserProfile(token: authToken)));
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            title: 'Done',
+            text: "Logged in successfully.",
+          );
+        } else {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Error...',
+            text: 'Login failed. Try again.',
+          );
+        }
+      } catch (e) {
+        inspect(e);
+      }
+    } else if (mobileText.isEmpty || passwordText.isEmpty) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MapScreen()));
+    }
   }
-}
-
-
 
   @override
   void dispose() {
@@ -167,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (_) =>
-                                                const SignUpScreen()));
+                                            const SignUpScreen()));
                                   },
                                   child: const Text(
                                     "Sign up Now",
