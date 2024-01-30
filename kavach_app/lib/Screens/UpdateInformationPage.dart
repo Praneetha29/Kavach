@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:kavach_app/Database/config.dart'; // Contains the serverURL and API paths
+import 'package:kavach_app/Database/config.dart';
 import 'package:kavach_app/Screens/AddContactPage.dart';
 import 'package:kavach_app/widgets/customized_button.dart';
 import 'package:kavach_app/widgets/customized_textfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:email_validator/email_validator.dart';
 
 class UpdateInformationPage extends StatefulWidget {
   final String? initialFullName;
@@ -39,38 +40,104 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
     _emergencyContact2Controller = TextEditingController();
   }
 
+  String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a valid name.';
+    }
+    return null;
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || !EmailValidator.validate(value)) {
+      return 'Please enter a valid email address.';
+    }
+    return null;
+  }
+
+  String? validateMobile(String? value) {
+    if (value == null || value.length != 10) {
+      return 'Mobile number must be 10 digits long.';
+    }
+    return null;
+  }
+
+  String? validateEmergencyContact(String? value) {
+    if (value == null || value.isEmpty || value.length != 10) {
+      return 'Emergency contact must be 10 digits long.';
+    }
+    return null;
+  }
 
   Future<void> updateUserProfile() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
+    if (_validateForm()) {
+      final prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
 
-    final Map<String, dynamic> updatedProfileData = {
-      'fullName': _fullNameController.text,
-      'email': _emailController.text,
-      'mobile': _mobileController.text,
-      'emergencyContact1': _emergencyContact1Controller.text,
-      'emergencyContact2': _emergencyContact2Controller.text,
-    };
+      final Map<String, dynamic> updatedProfileData = {
+        'fullName': _fullNameController.text,
+        'email': _emailController.text,
+        'mobile': _mobileController.text,
+        'emergencyContact1': _emergencyContact1Controller.text,
+        'emergencyContact2': _emergencyContact2Controller.text,
+      };
 
-    final response = await http.put(
-      Uri.parse(userProfileAPI),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-      body: json.encode(updatedProfileData),
-    );
-
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Profile updated successfully')),
+      final response = await http.put(
+        Uri.parse(userProfileAPI),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode(updatedProfileData),
       );
-    } else {
-      final errorResponse = json.decode(response.body);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update profile: ${errorResponse['message']}')),
-      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Profile updated successfully')),
+        );
+      } else {
+        final errorResponse = json.decode(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update profile: ${errorResponse['message']}')),
+        );
+      }
     }
+  }
+
+  bool _validateForm() {
+    final nameValid = validateName(_fullNameController.text) == null;
+    final emailValid = validateEmail(_emailController.text) == null;
+    final mobileValid = validateMobile(_mobileController.text) == null;
+    final emergencyContact1Valid = validateEmergencyContact(_emergencyContact1Controller.text) == null;
+    final emergencyContact2Valid = validateEmergencyContact(_emergencyContact2Controller.text) == null;
+
+    if (!nameValid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a valid name.')),
+      );
+      return false;
+    } else if (!emailValid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a valid email address.')),
+      );
+      return false;
+    } else if (!mobileValid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Mobile number must be 10 digits long.')),
+      );
+      return false;
+    } else if (!emergencyContact1Valid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Emergency Contact 1 must be 10 digits long.')),
+      );
+      return false;
+    } else if (!emergencyContact2Valid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Emergency Contact 2 must be 10 digits long.')),
+      );
+      return false;
+    }
+
+    return true;
   }
 
   @override
