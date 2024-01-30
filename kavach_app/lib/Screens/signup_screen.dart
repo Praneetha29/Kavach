@@ -167,6 +167,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   isPassword: false,
                   submitted: submitted,
                   inputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                  keyboardType: TextInputType.phone,
                 ),
                 CustomizedTextField(
                   myController: _usernameController,
@@ -174,6 +175,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   errorText: usernameErrorText,
                   isPassword: false,
                   submitted: submitted,
+                  keyboardType: TextInputType.text,
                 ),
                 CustomizedTextField(
                   myController: _passwordController,
@@ -181,6 +183,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   errorText: passwordErrorText,
                   isPassword: true,
                   submitted: submitted,
+                  keyboardType: TextInputType.visiblePassword,
                 ),
                 CustomizedTextField(
                   myController: _confirmPasswordController,
@@ -188,6 +191,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   errorText: confirmPasswordErrorText,
                   isPassword: true,
                   submitted: submitted,
+                  keyboardType: TextInputType.visiblePassword,
                 ),
                 CustomizedButton(
                   buttonText: "Sign Up",

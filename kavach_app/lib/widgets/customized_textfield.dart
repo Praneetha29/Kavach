@@ -9,6 +9,7 @@ class CustomizedTextField extends StatelessWidget {
   final bool? submitted;
   final List<TextInputFormatter>? inputFormatter; // Add this property
   final Icon? prefixIcon; // Updated prefixIcon to be an Icon widget
+  final TextInputType? keyboardType; // Allow specifying keyboardType
 
   const CustomizedTextField({
     Key? key,
@@ -19,6 +20,7 @@ class CustomizedTextField extends StatelessWidget {
     this.submitted,
     this.inputFormatter,
     this.prefixIcon,
+    this.keyboardType,
   }) : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class CustomizedTextField extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: TextField(
         keyboardType:
-        isPassword! ? TextInputType.visiblePassword : TextInputType.phone,
+        isPassword! ? TextInputType.visiblePassword : TextInputType.text,
         inputFormatters: inputFormatter,
         enableSuggestions: isPassword! ? false : true,
         autocorrect: isPassword! ? false : true,

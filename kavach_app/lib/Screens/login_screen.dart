@@ -164,6 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               inputFormatter: [
                                 FilteringTextInputFormatter.digitsOnly
                               ],
+                              keyboardType: TextInputType.phone,
                             ),
                             CustomizedTextField(
                               myController: _passwordController,
@@ -171,6 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               errorText: passwordErrorText,
                               isPassword: true,
                               submitted: submitted,
+                              keyboardType: TextInputType.visiblePassword,
                             ),
                             Align(
                               alignment: Alignment.centerRight,
