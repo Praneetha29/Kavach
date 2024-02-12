@@ -156,7 +156,7 @@ class _MapScreenState extends State<MapScreen> {
               title: Text('TestSMS'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SendMessageWidget()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SendSmsScreen()));
               },
             ),
           ],

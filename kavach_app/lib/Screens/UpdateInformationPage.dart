@@ -91,13 +91,21 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
       );
 
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Profile updated successfully')),
-        );
+        try {
+          final decodedResponse = json.decode(response.body);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Profile updated successfully')),
+          );
+          // ... Handle successful response ...
+        } catch (e) {
+          // This means there was an error parsing the response as JSON
+          // Handle the JSON parsing error
+        }
       } else {
-        final errorResponse = json.decode(response.body);
+        // Non-200 Response (e.g., error from the server)
+        // Handle non-200 responses here without attempting to parse as JSON
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to update profile: ${errorResponse['message']}')),
+          SnackBar(content: Text('Failed to update profile: ${response.body}')),
         );
       }
     }
