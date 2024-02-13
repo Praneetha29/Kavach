@@ -4,9 +4,6 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:another_flushbar/flushbar.dart';
 
 
-// Make sure to import your 'MapScreen' here
-// import 'path_to_your_map_screen.dart';
-
 class SendSmsScreen extends StatefulWidget {
   @override
   _SendSmsScreenState createState() => _SendSmsScreenState();
@@ -92,7 +89,37 @@ class _SendSmsScreenState extends State<SendSmsScreen> {
 
   void onSendSmsTap() {
     FocusScope.of(context).unfocus();
-    // Define behavior for when Send is tapped
-    // For example, request for permissions, validate numbers, and send messages
+
+    // Predefined phone numbers
+    List<String> phoneNumbers = ['+91012345', '+0987654321'];
+
+    String accidentLatitude = '37.422'; // Hypothetical accident latitude
+    String accidentLongitude = '-122.084'; // Hypothetical accident longitude
+    String mapsUrl = "https://www.google.com/maps/dir/?api=1&destination=$accidentLatitude,$accidentLongitude";
+    String message = "Emergency! The user may have had an accident. Help needed at this location: $mapsUrl";
+
+    // Request SMS permissions and send messages to the predefined numbers
+    telephony.requestSmsPermissions.then((bool? granted) {
+      if (granted == true) {
+        phoneNumbers.forEach((number) {
+          telephony.sendSms(
+            to: number,
+            message: message,
+            statusListener: listener,
+          );
+        });
+        setState(() {
+          _loading = true;
+        });
+      } else {
+        Flushbar(
+          title: "SMS Permission",
+          message: "SMS permission is required to send messages.",
+          duration: Duration(seconds: 3),
+          backgroundColor: Color(0XFF005653),
+          flushbarPosition: FlushbarPosition.TOP,
+        ).show(context);
+      }
+    });
   }
 }
