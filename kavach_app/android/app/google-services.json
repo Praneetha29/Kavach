@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "613794590675",
+    "project_id": "kavachsignin",
+    "storage_bucket": "kavachsignin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613794590675:android:21fd822b527acc37e50926",
+        "android_client_info": {
+          "package_name": "com.example.kavach_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613794590675-5loeeg78keium7fuarmtrbeqjdf20o0m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5x8DnzKdsiZGGqb-PiabK8FFTVNxwqT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613794590675-5loeeg78keium7fuarmtrbeqjdf20o0m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
