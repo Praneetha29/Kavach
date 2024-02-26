@@ -6,6 +6,7 @@ import 'package:kavach_app/Screens/UpdateInformationPage.dart';
 import 'package:kavach_app/Screens/ViewHistoryPage.dart';
 import 'package:kavach_app/Screens/AddContactPage.dart';
 import 'package:kavach_app/Screens/ChangePasswordPage.dart';
+import 'package:kavach_app/Screens/messagepage.dart';
 import 'package:kavach_app/Screens/testsmspage.dart';
 import 'package:kavach_app/Screens/testemailpage.dart';
 
@@ -165,6 +166,13 @@ class _MapScreenState extends State<MapScreen> {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TestEmailPage()));
+              },
+            ),
+            ListTile(
+              title: Text('TestMessage'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MessageServicePage()));
               },
             ),
           ],

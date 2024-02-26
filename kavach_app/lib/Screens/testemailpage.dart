@@ -57,7 +57,7 @@ class _TestEmailPageState extends State<TestEmailPage> {
 
     final message = Message()
       ..from = Address(email, 'Kav')
-      ..recipients = ['abc123@gmail.com']
+      ..recipients = ['abc@gmail.com']
       ..subject = 'Flutter Email Test ${DateTime.now()}'
       ..text = 'This is a test email sent from Flutter app.';
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:kavach_app/Database/config.dart';
 import 'package:kavach_app/Screens/AddContactPage.dart';
@@ -8,6 +9,7 @@ import 'package:kavach_app/widgets/customized_button.dart';
 import 'package:kavach_app/widgets/customized_textfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:kavach_app/Screens/google_auth_api.dart';
 
 class UpdateInformationPage extends StatefulWidget {
   final String? initialFullName;
@@ -231,7 +233,21 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
                 buttonText: 'Save',
                 buttonColor: Color(0XFF005653),
                 textColor: Colors.white,
-                onPressed: updateUserProfile,
+                onPressed: () async {
+    if (_validateForm()) {
+    // Sign-in to Google when saving
+    final GoogleSignInAccount? googleUser = await GoogleAuthApi.signIn();
+    if (googleUser != null && googleUser.email == _emailController.text) {
+    final auth = await googleUser.authentication;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userEmail', googleUser.email);
+    await prefs.setString('accessToken', auth.accessToken!);
+
+    // Once signed in, and tokens are stored, then save user profile data
+    updateUserProfile();
+    }
+    }
+                },
               ),
             ],
           ),
