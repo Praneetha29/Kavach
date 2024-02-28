@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:kavach_app/Screens/welcome_screen.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:kavach_app/Database/config.dart';
 import 'package:kavach_app/Screens/map_screen.dart';
@@ -21,14 +25,20 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   late String username, mobile;
   late IO.Socket socket;
+  late SharedPreferences prefs;
 
   @override
   void initState() {
     super.initState();
+    initSharedPref();
     connect();
     Map<String, dynamic> decodedToken = JwtDecoder.decode(widget.token);
     username = decodedToken["username"];
     mobile = decodedToken["mobile"];
+  }
+
+  void initSharedPref() async {
+    prefs = await SharedPreferences.getInstance();
   }
 
   void connect() {
@@ -53,6 +63,28 @@ class _UserProfileState extends State<UserProfile> {
     socket.connect();
   }
 
+  void logout() async {
+    try {
+      await prefs.clear();
+      Navigator.push(
+          context, MaterialPageRoute(builder: (_) => WelcomeScreen()));
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        title: 'Done',
+        text: "Logged out successfully.",
+      );
+    } catch (e) {
+      inspect(e);
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: 'Done',
+        text: "Log out failed",
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,12 +98,16 @@ class _UserProfileState extends State<UserProfile> {
                 ProfileListView(
                   text: 'Home',
                   icon: Icons.home,
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen())),
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MapScreen())),
                 ),
                 ProfileListView(
                   text: 'History',
                   icon: Icons.history,
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ViewHistoryPage())),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ViewHistoryPage())),
                 ),
                 ProfileListView(
                   text: 'Update Information',
@@ -91,19 +127,23 @@ class _UserProfileState extends State<UserProfile> {
                 ProfileListView(
                   text: 'Add Contact',
                   icon: Icons.person_add,
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddContactPage())),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddContactPage())),
                 ),
                 ProfileListView(
                   text: 'Change Password',
                   icon: Icons.lock,
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordPage())),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ChangePasswordPage())),
                 ),
                 ProfileListView(
                   text: 'Log Out',
                   icon: Icons.logout,
-                  onTap: () {
-                    // Implement logout logic
-                  },
+                  onTap: logout,
                 ),
               ],
             ),
@@ -196,7 +236,10 @@ class ProfileListView extends StatelessWidget {
             SizedBox(width: 25),
             Text(
               text,
-              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w300),
             ),
             Spacer(),
             Icon(
