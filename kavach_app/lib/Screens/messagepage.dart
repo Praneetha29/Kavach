@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:telephony/telephony.dart';
 import 'package:mailer/mailer.dart';
@@ -47,92 +48,93 @@ class _MessageServicePageState extends State<MessageServicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.redAccent,
-      appBar: AppBar(
-        title: Text("Emergency Alert"),
-        backgroundColor: Color(0XFF005653),
-      ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Accident Detected',
-                style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 30),
-              Text(
-                'If you are safe, press STOP',
-                style: TextStyle(fontSize: 24, color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 60),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  onPrimary: Colors.redAccent,
-                  padding: EdgeInsets.all(20),
-                  textStyle: TextStyle(fontSize: 26),
+      body: Padding(
+        padding: EdgeInsets.only(top: 70), // Adjust the top value to add space
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Accident Detected',
+                  style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
-                onPressed: () {
-                  stopAlert();
-                  // Inform the user if needed
-                },
-                child: Text('STOP'),
-              ),
-              Expanded(
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    SizedBox(
-                      width: 260,
-                      height: 260,
-                      child: CircularProgressIndicator(
-                        value: _seconds / 20,
-                        strokeWidth: 10,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      '$_seconds',
-                      style: TextStyle(
-                        fontSize: 80,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+                SizedBox(height: 30),
+                Text(
+                  'If you are safe, press STOP',
+                  style: TextStyle(fontSize: 24, color: Colors.white),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-            ],
+                SizedBox(height: 60),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    onPrimary: Colors.redAccent,
+                    padding: EdgeInsets.all(20),
+                    textStyle: TextStyle(fontSize: 26),
+                  ),
+                  onPressed: () {
+                    stopAlert();
+                    // Inform the user if needed
+                  },
+                  child: Text('STOP'),
+                ),
+                Expanded(
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox(
+                        width: 260,
+                        height: 260,
+                        child: CircularProgressIndicator(
+                          value: _seconds / 20,
+                          strokeWidth: 10,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        '$_seconds',
+                        style: TextStyle(
+                          fontSize: 80,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
+
   Future<void> sendMessage() async {
-    setState(() {
-      _isLoading = true;
-    });
+    LocationPermission permission = await Geolocator.requestPermission();
+    if (permission != LocationPermission.denied && permission != LocationPermission.deniedForever) {
+      var currentPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      final String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=${currentPosition.latitude},${currentPosition.longitude}';
+      final String message = "Emergency, the user has met with an accident and requires immediate attention. Location: $googleMapsUrl";
 
-    final String message = "Emergency, the user has met with an accident and requires immediate attention. Location: <Your-Google-Maps-Link>";
-    await sendSms(message);
-    await sendEmail(message);
+      setState(() => _isLoading = true);
 
-    setState(() {
-      _isLoading = false;
-      _seconds = 20; // Reset the countdown
-    });
+      await sendSms(message);
+      await sendEmail(message);
+
+      setState(() => _isLoading = false);
+    }
     // Optionally, navigate away from this screen
   }
 
   Future<void> sendSms(String messageBody) async {
     // Predefined phone numbers
-    List<String> phoneNumbers = ['+918245780', '+0987654321'];
+    List<String> phoneNumbers = ['+9112345678', '+0987654321'];
 
     final isGranted = await telephony.requestSmsPermissions;
     if (isGranted == true) {
@@ -148,40 +150,33 @@ class _MessageServicePageState extends State<MessageServicePage> {
   }
 
   Future<void> sendEmail(String messageBody) async {
-
+    //
     // GoogleAuthApi.signOut();
     //  return;
-    try {
-      final user = await GoogleAuthApi.signIn();
-      if (user == null) {
-        showSnackBar('Google Sign In failed.');
-        return;
-      }
+    final GoogleSignInAccount? googleUser = await GoogleAuthApi.signIn();
 
-      final email = user.email;
-      final auth = await user.authentication;
+    // If signing in was successful, retrieve the authentication details.
+    if (googleUser != null) {
+      final email = googleUser.email;
+      final GoogleSignInAuthentication auth = await googleUser.authentication;
       final accessToken = auth.accessToken;
 
-      if (email == null || accessToken == null) {
-        showSnackBar('Failed to authenticate for email sending.');
-        return;
-      }
-
-      final smtpServer = gmailSaslXoauth2(email, accessToken);
+      // Set up the SMTP server using the authentication details.
+      final smtpServer = gmailSaslXoauth2(email, accessToken!);
       final message = Message()
-        ..from = Address(email, 'Your Name')
-        ..recipients = ['abc@gmail.com'] // Change to the actual recipient's email address
-        ..subject = 'Emergency Message ${DateTime.now()}'
-        ..text = messageBody;
+        ..from = Address(email, 'Kavach')
+        ..recipients = ['abc@gmail.com']
+        ..subject = 'Emergency Alert ${DateTime.now()}'
+        ..text = (messageBody);
 
+      // Send the email message.
       await send(message, smtpServer);
       showSnackBar('Email sent successfully.');
-    } on MailerException catch (e) {
-      showSnackBar('Failed to send email: ${e.toString()}');
-    } catch (e) {
-      showSnackBar('An unexpected error occurred: ${e.toString()}');
+    } else {
+      showSnackBar('Google Sign In failed. Cannot send email.');
     }
   }
+
 
   void showSnackBar(String text) {
     final snackBar = SnackBar(
@@ -198,16 +193,3 @@ class _MessageServicePageState extends State<MessageServicePage> {
   }
 }
 
-class GoogleAuthApi {
-  static final _googleSignIn = GoogleSignIn(scopes: ['https://mail.google.com/']);
-
-  static Future<GoogleSignInAccount?> signIn() async {
-    if (await _googleSignIn.isSignedIn()) {
-      return _googleSignIn.currentUser;
-    } else {
-      return await _googleSignIn.signIn();
-    }
-  }
-
-  static Future signOut() => _googleSignIn.signOut();
-}
