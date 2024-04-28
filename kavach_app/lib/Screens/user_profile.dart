@@ -46,7 +46,7 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   void connect() {
-    socket = IO.io("http://192.168.175.185:3000/", <String, dynamic>{
+    socket = IO.io("http://103.211.202.111/", <String, dynamic>{
       'transports': ['websocket'],
     });
 
@@ -61,8 +61,8 @@ class _UserProfileState extends State<UserProfile> {
       //   type: QuickAlertType.error,
       //   title: 'Alert!!!',
       //   text: 'An accident is suspected.',
-      Navigator.push(context, MaterialPageRoute(builder: (context) => MessageServicePage()));
-
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => MessageServicePage()));
     });
 
     socket.connect();
