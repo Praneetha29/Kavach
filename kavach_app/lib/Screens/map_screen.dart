@@ -9,6 +9,7 @@ import 'package:kavach_app/Screens/ChangePasswordPage.dart';
 import 'package:kavach_app/Screens/messagepage.dart';
 import 'package:kavach_app/Screens/testsmspage.dart';
 import 'package:kavach_app/Screens/testemailpage.dart';
+import 'package:kavach_app/Screens/routeboard.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -173,6 +174,13 @@ class _MapScreenState extends State<MapScreen> {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context, MaterialPageRoute(builder: (context) => MessageServicePage()));
+              },
+            ),
+            ListTile(
+              title: Text('Route Board'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => RouteScreen()));
               },
             ),
           ],

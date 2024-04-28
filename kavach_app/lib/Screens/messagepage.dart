@@ -19,7 +19,13 @@ class _MessageServicePageState extends State<MessageServicePage> {
   final Telephony telephony = Telephony.instance;
   Timer? _countdownTimer;
   bool _isLoading = false;
-  int _seconds = 20;
+  int _seconds = 5;
+
+  get emergencyContact1 => null;
+  get emergencyContact2 => null;
+  get Police => null;
+  get Ambulance => null;
+
 
   @override
   void initState() {
@@ -40,7 +46,7 @@ class _MessageServicePageState extends State<MessageServicePage> {
 
   void stopAlert() {
     _countdownTimer?.cancel();
-    setState(() => _seconds = 20);
+    setState(() => _seconds = 5);
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => MapScreen()));
   }
 
@@ -117,10 +123,15 @@ class _MessageServicePageState extends State<MessageServicePage> {
 
   Future<void> sendMessage() async {
     LocationPermission permission = await Geolocator.requestPermission();
-    if (permission != LocationPermission.denied && permission != LocationPermission.deniedForever) {
-      var currentPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      final String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=${currentPosition.latitude},${currentPosition.longitude}';
-      final String message = "Emergency, the user has met with an accident and requires immediate attention. Location: $googleMapsUrl";
+    if (permission != LocationPermission.denied
+        && permission != LocationPermission.deniedForever) {
+      var currentPosition
+      =
+      await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      final String googleMapsUrl =
+          'https://www.google.com/maps/search/?api=1&query=${currentPosition.latitude},${currentPosition.longitude}';
+      final String message =
+          "Emergency, the user has met with an accident and requires immediate attention. Location: $googleMapsUrl";
 
       setState(() => _isLoading = true);
 
@@ -129,12 +140,10 @@ class _MessageServicePageState extends State<MessageServicePage> {
 
       setState(() => _isLoading = false);
     }
-    // Optionally, navigate away from this screen
   }
 
   Future<void> sendSms(String messageBody) async {
-    // Predefined phone numbers
-    List<String> phoneNumbers = ['+9112345678', '+0987654321'];
+    List<String> phoneNumbers = [emergencyContact1, emergencyContact2, Police, Ambulance];
 
     final isGranted = await telephony.requestSmsPermissions;
     if (isGranted == true) {
@@ -150,30 +159,18 @@ class _MessageServicePageState extends State<MessageServicePage> {
   }
 
   Future<void> sendEmail(String messageBody) async {
-    //
-    // GoogleAuthApi.signOut();
-    //  return;
+    // GoogleAuthApi.signOut(); //  return;
     final GoogleSignInAccount? googleUser = await GoogleAuthApi.signIn();
-
     // If signing in was successful, retrieve the authentication details.
-    if (googleUser != null) {
-      final email = googleUser.email;
-      final GoogleSignInAuthentication auth = await googleUser.authentication;
+    if (googleUser != null) { final email = googleUser.email; final GoogleSignInAuthentication auth = await googleUser.authentication;
       final accessToken = auth.accessToken;
-
-      // Set up the SMTP server using the authentication details.
       final smtpServer = gmailSaslXoauth2(email, accessToken!);
-      final message = Message()
-        ..from = Address(email, 'Kavach')
-        ..recipients = ['abc@gmail.com']
-        ..subject = 'Emergency Alert ${DateTime.now()}'
-        ..text = (messageBody);
-
-      // Send the email message.
+      final message = Message() ..from = Address(email, 'Kavach') ..recipients = ['kavachsafe@gmail.com']
+        ..subject = 'Emergency Alert ${DateTime.now()}' ..text = (messageBody);
       await send(message, smtpServer);
       showSnackBar('Email sent successfully.');
     } else {
-      showSnackBar('Google Sign In failed. Cannot send email.');
+      showSnackBar('Email could not be sent.');
     }
   }
 

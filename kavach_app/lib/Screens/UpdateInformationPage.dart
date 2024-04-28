@@ -159,63 +159,95 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(30.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 100,
-                height: 100,
-                margin: EdgeInsets.only(bottom: 20),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                  size: 60,
+              Text(
+                'Full Name',
+                style: TextStyle(
+                  fontWeight: FontWeight.w500, // Medium font weight
+                  fontSize: 18,
+                  color: Colors.grey[800],
+                  // Dark grey color
                 ),
               ),
               CustomizedTextField(
                 myController: _fullNameController,
-                hintText: 'Full Name',
+                hintText: "As per your Driver's License",
                 isPassword: false,
                 submitted: true,
                 prefixIcon: Icon(Icons.person),
               ),
+              Text(
+                'Email',
+                style: TextStyle(
+                  fontWeight: FontWeight.w500, // Medium font weight
+                  fontSize: 18,
+                  color: Colors.grey[800],
+                  // Dark grey color
+                ),
+              ),
               CustomizedTextField(
                 myController: _emailController,
-                hintText: 'Email',
+                hintText: 'abc@gmail.com',
                 isPassword: false,
                 submitted: true,
                 prefixIcon: Icon(Icons.email),
               ),
+              Text(
+                'Mobile Number',
+                style: TextStyle(
+                  fontWeight: FontWeight.w500, // Medium font weight
+                  fontSize: 18,
+                  color: Colors.grey[800],
+                  // Dark grey color
+                ),
+              ),
               CustomizedTextField(
                 myController: _mobileController,
-                hintText: 'Mobile Number',
+                hintText: 'Should be 10 digits',
                 isPassword: false,
                 submitted: true,
                 inputFormatter: [FilteringTextInputFormatter.digitsOnly],
                 prefixIcon: Icon(Icons.phone),
+              ),
+              Text(
+                'Emergency Contact Number 1',
+                style: TextStyle(
+                  fontWeight: FontWeight.w500, // Medium font weight
+                  fontSize: 18,
+                  color: Colors.grey[800],
+                  // Dark grey color
+                ),
               ),
               CustomizedTextField(
                 myController: _emergencyContact1Controller,
-                hintText: 'Emergency Contact Number 1',
+                hintText: 'Should be 10 digits',
                 isPassword: false,
                 submitted: true,
                 inputFormatter: [FilteringTextInputFormatter.digitsOnly],
                 prefixIcon: Icon(Icons.phone),
+              ),
+              Text(
+                'Emergency Contact Number 2',
+                style: TextStyle(
+                  fontWeight: FontWeight.w500, // Medium font weight
+                  fontSize: 18,
+                  color: Colors.grey[800],
+                  // Dark grey color
+                ),
               ),
               CustomizedTextField(
                 myController: _emergencyContact2Controller,
-                hintText: 'Emergency Contact Number 2',
+                hintText: 'Should be 10 digits',
                 isPassword: false,
                 submitted: true,
                 inputFormatter: [FilteringTextInputFormatter.digitsOnly],
                 prefixIcon: Icon(Icons.phone),
               ),
-              SizedBox(height: 20),
+
+              SizedBox(height: 8),
               CustomizedButton(
                 buttonText: 'Add Contacts',
                 buttonColor: Colors.white,
@@ -228,7 +260,7 @@ class _UpdateInformationPageState extends State<UpdateInformationPage> {
                   );
                 },
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 6),
               CustomizedButton(
                 buttonText: 'Save',
                 buttonColor: Color(0XFF005653),

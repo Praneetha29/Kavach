@@ -91,7 +91,7 @@ class _SendSmsScreenState extends State<SendSmsScreen> {
     FocusScope.of(context).unfocus();
 
     // Predefined phone numbers
-    List<String> phoneNumbers = ['+91012345', '+0987654321'];
+    List<String> phoneNumbers = ['+91123456', '+0987654321'];
 
     String accidentLatitude = '37.422'; // Hypothetical accident latitude
     String accidentLongitude = '-122.084'; // Hypothetical accident longitude

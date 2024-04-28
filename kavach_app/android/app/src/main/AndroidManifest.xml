@@ -10,7 +10,7 @@
 
     <uses-feature android:name="android.hardware.telephony" android:required="false"/>
     <application
-        android:label="kavach_app"
+        android:label="Kavach"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"

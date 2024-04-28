@@ -7,6 +7,7 @@ class AddContactPage extends StatelessWidget {
   // Consider If the controllers need to be disposed, switch to a StatefulWidget and override dispose().
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   // Add key to constructor
  AddContactPage({Key? key}) : super(key: key);
@@ -28,6 +29,7 @@ class AddContactPage extends StatelessWidget {
               hintText: 'Name',
               isPassword: false,
               submitted: true,
+              prefixIcon: Icon(Icons.person),
             ),
             const SizedBox(height: 16), // const added for performance
             CustomizedTextField(
@@ -35,10 +37,19 @@ class AddContactPage extends StatelessWidget {
               hintText: 'Phone',
               isPassword: false,
               submitted: true,
+              prefixIcon: Icon(Icons.phone),
               inputFormatter: [
                 FilteringTextInputFormatter.digitsOnly,
                 LengthLimitingTextInputFormatter(10),
               ],
+            ),
+            const SizedBox(height: 16), // const added for performance
+            CustomizedTextField(
+              myController: emailController,
+              hintText: 'Email',
+              isPassword: false,
+              submitted: true,
+              prefixIcon: Icon(Icons.email),
             ),
             const SizedBox(height: 16), // const added for performance
             CustomizedButton(

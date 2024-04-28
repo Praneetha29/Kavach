@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:kavach_app/Screens/messagepage.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:kavach_app/Database/config.dart';
@@ -8,6 +9,7 @@ import 'package:kavach_app/Screens/ViewHistoryPage.dart';
 import 'package:kavach_app/Screens/UpdateInformationPage.dart';
 import 'package:kavach_app/Screens/AddContactPage.dart';
 import 'package:kavach_app/Screens/ChangePasswordPage.dart';
+import 'package:kavach_app/Screens/messagepage.dart';
 
 class UserProfile extends StatefulWidget {
   final String token;
@@ -32,7 +34,7 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   void connect() {
-    socket = IO.io(serverURL, <String, dynamic>{
+    socket = IO.io("http://192.168.175.185:3000/", <String, dynamic>{
       'transports': ['websocket'],
     });
 
@@ -42,12 +44,13 @@ class _UserProfileState extends State<UserProfile> {
 
     socket.on('accidentOccurred', (data) {
       print('Accident occurred!');
-      QuickAlert.show(
-        context: context,
-        type: QuickAlertType.error,
-        title: 'Alert!!!',
-        text: 'An accident is suspected.',
-      );
+      // QuickAlert.show(
+      //   context: context,
+      //   type: QuickAlertType.error,
+      //   title: 'Alert!!!',
+      //   text: 'An accident is suspected.',
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MessageServicePage()));
+
     });
 
     socket.connect();
